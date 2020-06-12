@@ -8,7 +8,7 @@ export default class SMSForm extends Component {
     this.state = {
       message: {
         to: '',
-        body: 'Whats good w you my gurney'
+        body: 'Whats good'
       },
       submitting: false,
       error: false
