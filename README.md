@@ -12,21 +12,7 @@ cd react-express-starter
 npm install
 ```
 
-Create a `.env` file for environment variables in your server.
-
-You can start the server on its own with the command:
-
-```bash
-npm run server
-```
-
-Run the React application on its own with the command:
-
-```bash
-npm start
-```
-
-Run both applications together with the command:
+Run the application (React App and Express Server) with:
 
 ```bash
 npm run dev
