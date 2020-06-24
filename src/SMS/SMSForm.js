@@ -70,7 +70,7 @@ export default class SMSForm extends Component {
           className={this.state.error ? 'error sms-form' : 'sms-form'}
         >
           <div>
-            <label htmlFor="to">Phone Number:</label>
+            <label htmlFor="to">Greeting Phone Number:</label>
 
             {/* client inputs the recipient of the text message */}
             <input
@@ -81,17 +81,7 @@ export default class SMSForm extends Component {
               onChange={this.onHandleChange}
             />
           </div>
-
-          {/* client writes the text message's body */}
-          {/* <div>
-            <label htmlFor="body">Text Body:</label>
-            <textarea 
-              name="body" 
-              id="body"
-              value={this.state.message.body}
-              onChange={this.onHandleChange}
-              />
-          </div> */}
+    
 
           <button 
             type="submit"

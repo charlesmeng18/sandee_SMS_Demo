@@ -1,4 +1,5 @@
 const express = require('express');
+var router = express.Router();
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const client = require('twilio')(
@@ -11,6 +12,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
 
+const mongo = require('mongodb')
+var url = 'mongodb://localhost:27017/test'
+
+app.post('/api/reminders', (req, res) => {
+  res.header('Content-Type', 'application/json');
+  client.messages
+    .create({
+      from:process.env.TWILIO_PHONE_NUMBER,
+      to:req.body.to,
+      
+    })
+})
 
 app.post('/api/messages', (req, res) => {
   res.header('Content-Type', 'application/json');
@@ -28,8 +41,6 @@ app.post('/api/messages', (req, res) => {
       res.send(JSON.stringify({success:false}))
     })
 });
-
-
 
 app.get('/api/greeting', (req, res) => {
   const name = req.query.name || 'World';
