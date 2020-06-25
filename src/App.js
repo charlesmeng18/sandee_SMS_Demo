@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import SMSForm from './SMS/SMSForm'
+// import SMSForm from './SMS/SMSForm'
 import CheckList from './SMS/CheckList'
 
 class App extends Component {
@@ -8,10 +8,8 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <SMSForm/>
+          {/* <SMSForm/> */}
           <CheckList/>
-
-
         </header>
       </div>
     );

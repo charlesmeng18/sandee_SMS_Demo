@@ -12,16 +12,29 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
 
-const mongo = require('mongodb')
-var url = 'mongodb://localhost:27017/test'
-
 app.post('/api/reminders', (req, res) => {
   res.header('Content-Type', 'application/json');
+
+  // Filter and format the text message based on the notifcations, send text confirmation text
+  var message = Object.keys(req.body.checkboxes).filter(checkbox => req.body.checkboxes[checkbox])
+  if (message.length > 0) {
+    var string = message.join(", ")
+  } else {
+    var string = 'no'
+  }
+  var notification = "Successfully signed up for " + `${string}` + " notifications"
   client.messages
     .create({
       from:process.env.TWILIO_PHONE_NUMBER,
-      to:req.body.to,
-      
+      to: req.body.to,
+      body: notification
+    })
+    .then(() => {
+      res.send(JSON.stringify({success: true}))
+    })
+    .catch(err => {
+      console.log(err);
+      res.send(JSON.stringify({success:false}))
     })
 })
 
