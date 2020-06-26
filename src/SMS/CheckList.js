@@ -11,6 +11,9 @@ class CheckList extends Component {
     this.state = {
       to: "",
       sendNotifications: false,
+      settings: {
+        maxParking: 0
+      },
       checkboxes: OPTIONS.reduce(
         (options, option) => ({
           ...options,
@@ -84,35 +87,51 @@ class CheckList extends Component {
         console.log(checkbox, "is selected.");
       });
     // Console Print Statement to confirm correct selections
-    console.log(Object.keys(this.state.checkboxes)
-    .filter(checkbox => this.state.checkboxes[checkbox]))
-
-    // // The POST Request
-    // fetch('api/reminders', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   // Send the entire state (with phone number and notification types) to the Server
-    //   body: JSON.stringify(this.state)
-    // })
-    //   .then(res => res.json());
     
-    var interval;
-
     console.log(this.state.sendNotifications)
-
     
-    var interval = setInterval(() => {
-      if (!this.state.sendNotifications) {
-        clearInterval(interval)
-        console.log("interval stopped in this bish");
-      } else{
-        console.log("Shit is intervalling where notifications would be active")
-      }
-    }, 3000)
+    // Array of all the selected options
+    var selected = Object.keys(this.state.checkboxes)
+    .filter(checkbox => this.state.checkboxes[checkbox])
 
-    this.deselectAll();
+    //Console Print Statement to confirm correct selections
+    console.log(selected)
+    
+    // Notification that they have successfully signed up for whatever notifications
+    fetch('api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // Send the entire state (with phone number and notification types) to the Server
+      body: JSON.stringify(this.state)
+    })
+      .then(res => res.json());
+    
+    // // Multiple notifications sent (General Notification Server Response)
+    // if (selected.length > 0) {
+    //   var interval = setInterval(() => {
+    //     if (!this.state.sendNotifications) {
+    //       clearInterval(interval)
+    //       console.log("interval stopped in this bish");
+    //     } else{
+    //       ////// The exact notifications
+    //       fetch('api/generalNotifications', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       // Send the entire state (with phone number and notification types) to the Server
+    //       body: JSON.stringify(this.state)
+    //       })
+    //       .then(res => res.json());
+    //     }
+    //   }, 10000)
+    // }
+
+    // Specific POST for if we should handle parking notifications
+    
+
   };
   ///////////////////////////////////////////
   // Functions  create the checkboxes
@@ -131,6 +150,16 @@ class CheckList extends Component {
     this.setState({
       sendNotifications: false
     })
+    this.deselectAll();
+  }
+
+  //////////////////////////////////////////////
+  updateMaxParking = (event) => {
+    this.setState({
+      settings : {
+        maxParking: event.target.value
+      }
+    })
   }
   render() {
     return (
@@ -139,17 +168,25 @@ class CheckList extends Component {
           <div className="col-sm-12">
             <form onSubmit={this.handleFormSubmit}>
               <div>
-                {/* <label htmlFor="to">Enter Phone Number</label> */}
+                <label htmlFor="to">Enter Phone Number</label>
                 <input
-                type="tel"
-                name="to"
-                id="to"
-                value={this.state.to}
-                onChange={this.phoneNumberChange}
+                  type="tel"
+                  name="to"
+                  id="to"
+                  value={this.state.to}
+                  onChange={this.phoneNumberChange}
                 />
               </div>
 
               {this.createCheckboxes()}
+              <label htmlFor="maxParking">Enter Max Parking Hours</label>
+              <input
+                type="text"
+                name="maxParking"
+                id="maxParking"
+                value={this.state.settings.maxParking}
+                onChange={this.updateMaxParking}
+              />
               <div>
                 <button
                   type="button"
@@ -166,7 +203,7 @@ class CheckList extends Component {
                   Deselect All
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Send Notifications
+                  Start Notifications
                 </button>
               </div>
             </form>
