@@ -130,7 +130,28 @@ class CheckList extends Component {
     // }
 
     // Specific POST for if we should handle parking notifications
-    
+    if (this.state.checkboxes["Parking"]) {
+      console.log("Enters Parking case")
+      var interval = setInterval(() => {
+        if (!this.state.sendNotifications) {
+          clearInterval(interval)
+          console.log("interval stopped in this bish");
+        } else{
+          ////// The exact notifications
+          fetch('api/parkingNotifications', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          // Send the entire state (with phone number and notification types) to the Server
+          body: JSON.stringify(this.state)
+          })
+          .then(res => res.json());
+        }
+        // TODO: Need to have this update to live hours
+      }, parseInt(this.state.settings.maxParking) * 1000)
+    }
+
 
   };
   ///////////////////////////////////////////

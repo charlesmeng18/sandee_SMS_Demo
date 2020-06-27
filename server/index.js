@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(pino);
 
+// Notification that they have successfully signed up for whatever notifications
 app.post('/api/signup', (req, res) => {
   res.header('Content-Type', 'application/json');
 
@@ -38,33 +39,52 @@ app.post('/api/signup', (req, res) => {
     })
 })
 
-// General Notifications Server Response
-app.post('/api/generalNotifications', (req, res) => {
+// // // General Notifications Server Response
+// app.post('/api/generalNotifications', (req, res) => {
+//   res.header('Content-Type', 'application/json');
+
+//   // Filter and format the text message based on the notifcations, send text confirmation text
+//   // var message = Object.keys(req.body.checkboxes).filter(checkbox => req.body.checkboxes[checkbox])
+//   var message = Object.keys(req.body.checkboxes).filter(checkbox => req.body.checkboxes[checkbox])
+//   console.log(message)
+//   for (var i = 0; i < message.length; ++i) {
+//     var notification = "Notification for " + `${message[i]}`
+//     client.messages
+//       .create({
+//         from:process.env.TWILIO_PHONE_NUMBER,
+//         to: req.body.to,
+//         body: notification
+//       })
+//       .then(() => {
+//         res.send(JSON.stringify({success: true}))
+//       })
+//       .catch(err => {
+//         console.log(err);
+//         res.send(JSON.stringify({success:false}))
+//       })
+//   }
+// })
+
+// Server response specifically for Parking
+app.post('/api/parkingNotifications', (req, res) => {
   res.header('Content-Type', 'application/json');
 
-  // Filter and format the text message based on the notifcations, send text confirmation text
   // var message = Object.keys(req.body.checkboxes).filter(checkbox => req.body.checkboxes[checkbox])
-  var message = Object.keys(req.body.checkboxes).filter(checkbox => req.body.checkboxes[checkbox])
-  console.log(message)
-  for (var i = 0; i < message.length; ++i) {
-    var notification = "Notification for " + `${message[i]}`
-    client.messages
-      .create({
-        from:process.env.TWILIO_PHONE_NUMBER,
-        to: req.body.to,
-        body: notification
-      })
-      .then(() => {
-        res.send(JSON.stringify({success: true}))
-      })
-      .catch(err => {
-        console.log(err);
-        res.send(JSON.stringify({success:false}))
-      })
-  }
+  var notification = "Parking notification: 15 minutes till meter expires"
+  client.messages
+    .create({
+      from:process.env.TWILIO_PHONE_NUMBER,
+      to: req.body.to,
+      body: notification
+    })
+    .then(() => {
+      res.send(JSON.stringify({success: true}))
+    })
+    .catch(err => {
+      console.log(err);
+      res.send(JSON.stringify({success:false}))
+  })
 })
-
-// Server response specifically for Sunscreen
 
 
 
