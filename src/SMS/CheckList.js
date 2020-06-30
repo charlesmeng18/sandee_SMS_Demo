@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Checkbox from "./Checkbox";
-import './SMSForm.css';
 
 const OPTIONS = ["Sunscreen", "Water", "Parking"];
 
@@ -107,32 +106,12 @@ class CheckList extends Component {
       body: JSON.stringify(this.state)
     })
       .then(res => res.json());
-    
-    // // Multiple notifications sent (General Notification Server Response)
-    // if (selected.length > 0) {
-    //   var interval = setInterval(() => {
-    //     if (!this.state.sendNotifications) {
-    //       clearInterval(interval)
-    //       console.log("interval stopped in this bish");
-    //     } else{
-    //       ////// The exact notifications
-    //       fetch('api/generalNotifications', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //       // Send the entire state (with phone number and notification types) to the Server
-    //       body: JSON.stringify(this.state)
-    //       })
-    //       .then(res => res.json());
-    //     }
-    //   }, 10000)
-    // }
 
+    var interval;
     // Specific POST for if we should handle parking notifications
     if (this.state.checkboxes["Parking"]) {
       console.log("Enters Parking case")
-      var interval = setInterval(() => {
+      interval = setInterval(() => {
         if (!this.state.sendNotifications) {
           clearInterval(interval)
           console.log("interval stopped in this bish");
@@ -149,10 +128,54 @@ class CheckList extends Component {
           .then(res => res.json());
         }
         // TODO: Need to have this update to live hours
-      }, parseInt(this.state.settings.maxParking) * 1000)
+      }, parseInt(this.state.settings.maxParking) * 20000)
     }
 
+    // Specific POST for if we should handle sunscreen notifications
+    if (this.state.checkboxes["Sunscreen"]) {
+      console.log("Enters Sunscreen case")
+      interval = setInterval(() => {
+        if (!this.state.sendNotifications) {
+          clearInterval(interval)
+          console.log("interval stopped in this bish");
+        } else{
+          ////// The exact notifications
+          fetch('api/sunscreenNotifications', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          // Send the entire state (with phone number and notification types) to the Server
+          body: JSON.stringify(this.state)
+          })
+          .then(res => res.json());
+        }
+        // TODO: Need to have this update to live hours
+      }, 10000)
+    }
 
+    // Specific POST for if we should handle water notifications
+    if (this.state.checkboxes["Water"]) {
+      console.log("Enters Water case")
+      interval = setInterval(() => {
+        if (!this.state.sendNotifications) {
+          clearInterval(interval)
+          console.log("interval stopped in this bish");
+        } else{
+          ////// The exact notifications
+          fetch('api/waterNotifications', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          // Send the entire state (with phone number and notification types) to the Server
+          body: JSON.stringify(this.state)
+          })
+          .then(res => res.json());
+        }
+        // TODO: Need to have this update to live hours
+      }, 15000)
+    }
   };
   ///////////////////////////////////////////
   // Functions  create the checkboxes
@@ -187,6 +210,7 @@ class CheckList extends Component {
       <div className="container">
         <div className="row mt-5">
           <div className="col-sm-12">
+            <h2>Sandee Beach Trip Notifications</h2>
             <form onSubmit={this.handleFormSubmit}>
               <div>
                 <label htmlFor="to">Enter Phone Number</label>
