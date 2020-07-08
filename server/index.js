@@ -106,7 +106,7 @@ app.post('/api/waterNotifications', (req, res) => {
 app.post('/sms', (req, res) => {
   const twiml = new MessagingResponse();
 
-  twiml.message('Th Robots aare coming to eat your ass');
+  twiml.message('Th Robots are coming to eat your ass');
 
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());

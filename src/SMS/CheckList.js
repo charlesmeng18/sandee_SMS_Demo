@@ -151,7 +151,7 @@ class CheckList extends Component {
           .then(res => res.json());
         }
         // TODO: Need to have this update to live hours
-      }, 10000)
+      }, 150000)
     }
 
     // Specific POST for if we should handle water notifications
@@ -174,7 +174,7 @@ class CheckList extends Component {
           .then(res => res.json());
         }
         // TODO: Need to have this update to live hours
-      }, 15000)
+      }, 200000)
     }
   };
   ///////////////////////////////////////////
